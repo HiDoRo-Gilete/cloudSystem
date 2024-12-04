@@ -91,7 +91,7 @@ class Main:
             except:
                 print("Path file is invalid!")
                 return
-            mode=int(input("Plase input mode (1: Read only, 0: Read and Write): "))
+            mode=int(input("Plase input hidden mode (1: hidden, 0: no hidden): "))
             if mode != 0 and mode != 1:
                 print("Mode value must be 0 or 1!")
                 return
