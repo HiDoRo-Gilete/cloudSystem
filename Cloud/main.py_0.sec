@@ -69,14 +69,10 @@ class Main:
         try:
             self.getData = True
             self.result = '|'
-            self.result += getstring('Name')+'|'+getstring('Date')+'|'+getstring('Time')+'|'+getstring('Size')+'|'+getstring('Password')+'|\n'
+            self.result += getstring('Name')+'|'+getstring('Date')+'|'+getstring('Time')+'|'+getstring('Size')+'|\n'
             for file in self.cl.allFiles:
-                if file['hidden']=='0':
-                    self.result+='|'+getstring(file['name'])+'|'+getstring(file['date'])+'|'
-                    self.result+=getstring(file['time'])+'|'+getstring(str(file['size']))+'|'
-                    if file['password'] == '1': self.result+=getstring('Yes')
-                    else: self.result+=getstring('No')
-                    self.result +='|\n'
+                self.result+='|'+getstring(file['name'])+'|'+getstring(file['date'])+'|'
+                self.result+=getstring(file['time'])+'|'+getstring(str(file['size']))+'|\n'
         except Exception as e:
             self.result = e
         finally: 
@@ -113,30 +109,4 @@ class Main:
             filesrc = input("Please input filename to Export: ")
             filedes=input("Create filename for export: ")
             folder =input("Please input path folder to contain file destination: ")
-            self.getData = True
-            time.sleep(0.5)
-            self.cl.exportFile(filesrc,filedes,folder)
-            self.result="Create file "+filedes+" into path "+folder+"/"
-        except Exception as e:
-            self.result = e
-    def deleteFile(self):
-        try:
-            self.result = ""
-            file= input("Please input filename Delete: ")
-            self.getData = True
-            time.sleep(0.5)
-            self.cl.deleteFile(file)
-            self.result="Delete file "+file+" success!"
-        except Exception as e:
-            self.result = e
-    def recoverFile(self):
-        try:
-            self.result = ''
-            self.getData = True
-            number =self.cl.recoverFile()
-            self.result = "Find and recovery "+str(number)+" files"
-        except Exception as e:
-            self.result = e
-        
-main = Main()
-main.main()
+            

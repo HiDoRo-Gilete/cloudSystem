@@ -11,7 +11,7 @@ class Cloud:
             os.makedirs(Directory)
         self.secfiles = os.listdir(Directory)
         self.secconfigs=[]
-        self.xorValue = b'\x32\x31\x31\x32\x30\x32\x35\x33'
+        self.xorValue = b'\x4E\x48\x4F\x4D\x41\x54\x50\x48'
         self.getSec()
         self.allFiles = self.list_file()
     def getSec(self):
@@ -49,6 +49,8 @@ class Cloud:
                     filename = Converter.xorMes(entry[1:12],self.xorValue).decode()
                     filename = filename.replace('$','')
                     extend = entry[12:17].decode().replace('$','')
+                    hiden = Converter.decimalToBit(entry[17],1)[6]
+                    pw = Converter.decimalToBit(entry[17],1)[7]
                     bytedate = Converter.decimalToBit(entry[26],1)+Converter.decimalToBit(entry[27],1)
                     y = Converter.bitstring_to_bytes(bytedate[0:7],1)[0]
                     m= Converter.bitstring_to_bytes(bytedate[7:11],1)[0]
@@ -65,7 +67,9 @@ class Cloud:
                     filenames.append({'name':filename.replace("$","")+'.'+extend,
                                       'date':str(d)+'/'+str(m)+'/'+str(y),
                                       'time':str(h)+':'+str(mi)+':'+str(s),
-                                      'size':filesize
+                                      'size':filesize,
+                                      'hidden':hiden,
+                                      'password': pw
                                       })
                     
                 entry=f.read(32)
@@ -160,6 +164,7 @@ class Cloud:
             for i in range(secsize):
                 filesrc = open(self.accessSecFile(filename,i),'rb')
                 data = filesrc.read()
+                data =data[:data.find(0)]
                 filedes.write(data)
                 filesrc.close()
             filedes.close()
@@ -261,7 +266,12 @@ class Cloud:
 
 
 
-cloud = Cloud()
+# cloud = Cloud()
+# f = open(Directory+'/'+cloud.secconfigs[0],'rb')
+# print(f.read(32))
+# data = f.read(32)
+# for i in range(len(data)):
+#     print(data[i])
 # print (cloud.allFiles)
 # cloud.exportFile('seminar.pdf','test.pdf','.')
 #cloud.addFile('D:/code python/2024/Blockchain/Lab 1/RAFT/README.md',1,)
